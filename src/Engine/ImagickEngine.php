@@ -16,6 +16,11 @@ class ImagickEngine extends Engine {
 
     }
 
+    function __clone()
+    {
+        $this->handle = clone $this->handle;
+    }
+
     function loadFile($path)
     {
         $this->handle->readImage($path);
@@ -27,6 +32,10 @@ class ImagickEngine extends Engine {
         return $this;
     }
 
+    function getBlob(){
+        return $this->handle->getImageBlob();
+    }
+
     function getSize(){
         $s = $this->handle->getImageGeometry();
         return [$s['width'], $s['height']];
@@ -36,6 +45,12 @@ class ImagickEngine extends Engine {
         $height = $height ?? $width;
         $this->handle->thumbnailImage($width, $height, true, true);
         return $this;
+    }
+
+    function scale($width = 0, $height = 0){
+        if($width == 0 && $width == $height)
+            return $this;
+        $this->handle->resizeImage();
     }
 
     function jpegCompress($quality = 92){
@@ -53,11 +68,22 @@ class ImagickEngine extends Engine {
         return false;
     }
 
+    /**
+     * @param Textbox $tb
+     * @return bool
+     */
     function drawTextBox(Textbox $tb){
         $draw = new \ImagickDraw();
         $draw->setFillColor(new \ImagickPixel($tb->getColor()));
         $draw->setFontSize($tb->getFontSize());
         $draw->setTextAlignment($this->alignment($tb->horAlign()));
+        if(!empty($tb->getStrokeWidth()) && $tb->getStrokeWidth() > 0){
+            $color = $tb->getStrokeColor() ?? $tb->getColor();
+            $opac  = $tb->getStrokeOpacity() ?? 1;
+            $draw->setStrokeWidth($tb->getStrokeWidth());
+            $draw->setStrokeColor(new \ImagickPixel($color));
+            $draw->setStrokeOpacity($opac);
+        }
         $draw->annotation($tb->getX(), $tb->getY(), $tb->getText());
         return $this->handle->drawImage($draw);
     }

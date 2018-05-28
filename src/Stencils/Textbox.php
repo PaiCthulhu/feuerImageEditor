@@ -16,8 +16,11 @@ class Textbox extends Stencil {
      * @var string $text
      * @var string $hAlign
      * @var string $vAlign
+     * @var string $strokeColor
+     * @var int $strokeWidth
+     * @var float $strokeOpacity
      */
-    protected $fontFile, $fontSize, $color, $angle, $text, $hAlign, $vAlign;
+    protected $fontFile, $fontSize, $color, $angle, $text, $hAlign, $vAlign, $strokeColor, $strokeWidth, $strokeOpacity;
 
     /**
      * Textbox constructor.
@@ -25,7 +28,8 @@ class Textbox extends Stencil {
     function __construct()
     {
         parent::__construct();
-        $this->fontSize = $this->angle = 0;
+        $this->fontSize = $this->angle = $this->strokeWidth = 0;
+        $this->strokeOpacity = 1;
         $this->color = '#000000';
         $this->hAlign = Align::LEFT;
         $this->vAlign = Align::TOP;
@@ -77,6 +81,63 @@ class Textbox extends Stencil {
 
     function getColor(){
         return $this->color;
+    }
+
+    function setStrokeColor($hex){
+        $this->strokeColor = $hex;
+        return $this;
+    }
+
+    function getStrokeColor(){
+        return $this->strokeColor;
+    }
+
+    /**
+     * @param int $w Width, in pixels of the text stroke
+     * @return Textbox $this Return itself to allow chaining
+     */
+    function setStrokeWidth($w){
+        $this->strokeWidth = $w;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    function getStrokeWidth(){
+        return $this->strokeWidth;
+    }
+
+    /**
+     * @param float $opac A number from 0 to 1, being 0 fully transparent and 1 fully opaque
+     * @return Textbox $this Return itself to allow chaining
+     */
+    function setStrokeOpacity($opac){
+        $opac = ($opac >= 0 && $opac <= 1)? $opac:1;
+        $this->strokeOpacity = $opac;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    function getStrokeOpacity(){
+        return $this->strokeOpacity;
+    }
+
+    function setStroke($width, $color = null, $opacity = null){
+        $color = $color ?? $this->getColor();
+        $opacity = $opacity ?? 1;
+        $this->setStrokeWidth($width)->setStrokeColor($color);
+        return $this;
+    }
+
+    function getStroke(){
+        return [
+            'width'=>$this->getStrokeWidth(),
+            'color'=>$this->getStrokeColor(),
+            'opacity'=>$this->getStrokeOpacity()
+        ];
     }
 
     /**

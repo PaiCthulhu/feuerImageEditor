@@ -15,6 +15,15 @@ class Image {
         $this->engine = new ImagickEngine();
     }
 
+    function __clone()
+    {
+        $this->engine = clone $this->engine;
+    }
+
+    function base64(){
+        return base64_encode($this->engine->getBlob());
+    }
+
     function save($path){
         $this->renderLayers();
         $this->engine->saveFile($path);
@@ -41,9 +50,17 @@ class Image {
     function resize($width, $height = null){
         $height = $height ?? $width;
         $this->engine->resize($width, $height);
+        $this->reloadSize();
         return $this;
     }
 
+    function scale($width = 0, $height = 0){
+        if($width == 0 && $width == $height)
+            return $this;
+        $this->engine->scale($width, $height);
+        $this->reloadSize();
+        return $this;
+    }
 
     function jpegCompress($quality){
         $this->engine->jpegCompress($quality);
@@ -51,15 +68,18 @@ class Image {
     }
 
     function thumb($path, $size = 512, $quality = 75){
-        $this->resize($size)->jpegCompress($quality)->save($path);
+        $thumb = clone $this;
+        $thumb->renderLayers()->resize($size)->jpegCompress($quality)->save($path);
         return $this;
     }
 
     /**
      * @param Stencil $content
+     * @return Image $this Return itself to allow chaining
      */
     function addLayer($content = null){
         $this->layers[] = $content;
+        return $this;
     }
 
 
@@ -70,12 +90,22 @@ class Image {
         return count($this->layers);
     }
 
-    protected function renderLayers(){
+    /**
+     * @return Image $this Return itself to allow chaining
+     * @throws \Exception
+     */
+    function renderLayers(){
         if($this->layerCount() > 0)
-        foreach ($this->layers as $layer){
+        foreach ($this->layers as $i=>$layer){
             if($layer instanceof Stencil)
-                $this->engine->{$layer->drawFunction()}($layer);
+                if($this->engine->{$layer->drawFunction()}($layer) == true)
+                    unset($this->layers[$i]);
+                else
+                    throw new \Exception('Error on drawing layer '.$i);
+            else
+                throw new \Exception('Layer ('.$i.') format not recognized! Layer data: '.print_r($layer, true));
         }
+        return $this;
     }
 
 }
