@@ -69,6 +69,28 @@ abstract class Stencil {
         return $this;
     }
 
+    function getSize(){
+        return ['width'=>$this->width, 'height'=>$this->height];
+    }
+
+    function setWidth($width){
+        $this->width = $width;
+        return $this;
+    }
+
+    function getWidth(){
+        return $this->width;
+    }
+
+    function setHeight($height){
+        $this->height = $height;
+        return $this;
+    }
+
+    function getHeight(){
+        return $this->height;
+    }
+
     /**
      * Return the name of the Engine's draw function
      * @return string

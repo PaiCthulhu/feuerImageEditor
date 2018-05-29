@@ -74,9 +74,38 @@ class ImagickEngine extends Engine {
      */
     function drawTextBox(Textbox $tb){
         $draw = new \ImagickDraw();
+        $draw->setResolution($tb->getWidth(), $tb->getHeight());
+
+        //Shape
+        if(!empty($tb->getBGColor()) || (!empty($tb->getBorderWidth()) && $tb->getBorderWidth() > 0)){
+            //Background
+            if(!empty($tb->getBGColor()))
+                $bgColor = $tb->getBGColor();
+            else
+                $bgColor = '#00000000';
+            $draw->setFillColor(new \ImagickPixel($bgColor));
+            //Border
+            if(!empty($tb->getBorderWidth()) && $tb->getBorderWidth() > 0){
+                $color = $tb->getBorderColor() ?? $tb->getBGColor();
+                $draw->setStrokeWidth($tb->getBorderWidth());
+                $draw->setStrokeColor(new \ImagickPixel($color));
+            }
+            else{
+                $draw->setStrokeWidth(0);
+                $draw->setStrokeColor(new \ImagickPixel("#00000000"));
+                $draw->setStrokeOpacity(0);
+            }
+
+            $x2 = $tb->getX()+$tb->getWidth();
+            $y2 = $tb->getY()+$tb->getHeight();
+            $draw->rectangle($tb->getX(), $tb->getY(), $x2, $y2);
+        }
+
+        //Font
         $draw->setFillColor(new \ImagickPixel($tb->getColor()));
         $draw->setFontSize($tb->getFontSize());
-        $draw->setTextAlignment($this->alignment($tb->horAlign()));
+
+        //Stroke
         if(!empty($tb->getStrokeWidth()) && $tb->getStrokeWidth() > 0){
             $color = $tb->getStrokeColor() ?? $tb->getColor();
             $opac  = $tb->getStrokeOpacity() ?? 1;
@@ -84,7 +113,28 @@ class ImagickEngine extends Engine {
             $draw->setStrokeColor(new \ImagickPixel($color));
             $draw->setStrokeOpacity($opac);
         }
-        $draw->annotation($tb->getX(), $tb->getY(), $tb->getText());
+        else{
+            $draw->setStrokeWidth(0);
+            $draw->setStrokeColor(new \ImagickPixel("#00000000"));
+            $draw->setStrokeOpacity(0);
+        }
+
+        //Alignment
+        $draw->setTextAlignment($this->alignment($tb->horAlign()));
+        $x = $tb->getX();
+        if($tb->horAlign() == Align::CENTER)
+            $x += $tb->getWidth() / 2;
+        else if($tb->horAlign() == Align::RIGHT)
+            $x += $tb->getWidth() - 1;
+        $y = $tb->getY()+$tb->getFontSize();
+        if($tb->verAlign() == Align::MIDDLE)
+            $y += ($tb->getHeight() - $tb->getFontSize()) / 2;
+        else if($tb->verAlign() == Align::BOTTOM)
+            $y = $tb->getY() + $tb->getHeight();
+
+        //Finish
+        $draw->annotation($x, $y, $tb->getText());
         return $this->handle->drawImage($draw);
     }
+
 }
