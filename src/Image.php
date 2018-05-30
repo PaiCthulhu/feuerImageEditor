@@ -6,11 +6,12 @@ use PaiCthulhu\FeuerImageEditor\Stencils\Stencil;
 
 class Image {
 
-    protected $engine, $width, $height, $layers;
+    protected $engine, $x, $y, $width, $height, $layers;
 
 
     function __construct()
     {
+        $this->x = $this->y = 0;
         $this->layers = [];
         $this->engine = new ImagickEngine();
     }
@@ -18,6 +19,10 @@ class Image {
     function __clone()
     {
         $this->engine = clone $this->engine;
+    }
+
+    function getHandle(){
+        return $this->engine->getHandle();
     }
 
     function base64(){
@@ -40,6 +45,25 @@ class Image {
         $i->engine->loadFile($path);
         $i->reloadSize();
         return $i;
+    }
+
+    function setXY($x, $y){
+        $this->x = $x;
+        $this->y = $y;
+        return $this;
+    }
+
+    function setPos($x, $y = null){
+        $y = $y ?? $x;
+        return $this->setXY($x, $y);
+    }
+
+    function getX(){
+        return $this->x;
+    }
+
+    function getY(){
+        return $this->y;
     }
 
     function reloadSize(){
@@ -74,7 +98,7 @@ class Image {
     }
 
     /**
-     * @param Stencil $content
+     * @param Stencil|Image $content
      * @return Image $this Return itself to allow chaining
      */
     function addLayer($content = null){
@@ -101,7 +125,12 @@ class Image {
                 if($this->engine->{$layer->drawFunction()}($layer) == true)
                     unset($this->layers[$i]);
                 else
-                    throw new \Exception('Error on drawing layer '.$i);
+                    throw new \Exception('Error on drawing stencil layer '.$i);
+            else if($layer instanceof Image)
+                if($this->engine->drawImage($layer) == true)
+                    unset($this->layers[$i]);
+                else
+                    throw new \Exception('Error on drawing image layer '.$i);
             else
                 throw new \Exception('Layer ('.$i.') format not recognized! Layer data: '.print_r($layer, true));
         }
