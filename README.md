@@ -9,18 +9,6 @@
 
 Feuer Image Editor is a PHP image handling and manipulation library, made to fill the gaps between Imagick and GD, with focus on greater text handling (like text boxes, which is absent on similar libraries)
 
-## Structure
-
-If any of the following are applicable to your project, then the directory structure should follow industry best practices by being named the following.
-
-```
-bin/        
-config/
-src/
-tests/
-vendor/
-```
-
 
 ## Install
 
@@ -32,19 +20,33 @@ $ composer require pai-cthulhu/feuerimageeditor
 
 ## Usage
 
+### Simple thumbnail example
+
 ``` php
 $img = Image::open('/path/to/file.jpg');
 $img->thumb('/path/to/thumb.jpg');
 ```
 
+### Textbox
+```` php
+$img = Image::open('/path/to/file.jpg');
+
+$tb = new Textbox();
+$tb->setPos(0, 120)
+    ->setSize(400, 150)
+    ->setBGColor('#f28d1a')
+    ->setFont('/path/to/font.ttf', 32)
+    ->setColor('#ffffff')
+    ->setText('Hello World!')
+    ->setAlignment(Align::CENTER, Align::MIDDLE);
+$img->addLayer($tb);
+
+$img->save('/path/to/save/file.jpg');
+````
+
 ## Change log
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
-[comment]: <> (## Testing)
-[comment]: <> (``` bash)
-[comment]: <> ($ composer test)
-[comment]: <> (```)
 
 ## Contributing
 
