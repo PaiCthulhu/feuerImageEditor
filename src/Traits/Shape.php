@@ -1,6 +1,6 @@
 <?php
 
-namespace PaiCthulhu\FeuerImageEditor\Stencils\Traits;
+namespace PaiCthulhu\FeuerImageEditor\Traits;
 
 trait Shape {
 

@@ -1,5 +1,5 @@
 <?php
-namespace PaiCthulhu\FeuerImageEditor\Stencils\Traits;
+namespace PaiCthulhu\FeuerImageEditor\Traits;
 
 use PaiCthulhu\FeuerImageEditor\Align;
 

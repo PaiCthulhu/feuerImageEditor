@@ -1,8 +1,8 @@
 <?php
 namespace PaiCthulhu\FeuerImageEditor\Stencils;
 
-use PaiCthulhu\FeuerImageEditor\Stencils\Traits\Shape;
-use PaiCthulhu\FeuerImageEditor\Stencils\Traits\Text;
+use PaiCthulhu\FeuerImageEditor\Traits\Shape;
+use PaiCthulhu\FeuerImageEditor\Traits\Text;
 
 /**
  * Class Textbox
