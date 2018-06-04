@@ -4,6 +4,15 @@ All notable changes to `FeuerImageEditor` will be documented in this file.
 
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.4] - 2018-06-04
+
+### Added
+- `ImageLayer` created to allow `Layers` from image files
+- Refactored `Image` into `ImageBase` to allow both Image and ImageLayers to inherit 
+
+### Fixed
+- Changed composer name to **pai-Cthulhu/feuerimageeditor** as composer don't allow uppercase characters
+
 ## [0.3.1] - 2018-05-30
 
 ### Fixed
