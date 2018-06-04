@@ -3,8 +3,10 @@
     "type": "library",
     "description": "Feuer Image Editor is a PHP image handling and manipulation library, made to fill the gaps between Imagick and GD, with focus on greater text handling (like text boxes, which is absent on similar libraries).",
     "keywords": [
-        "PaiCthulhu",
-        "FeuerImageEditor"
+        "image",
+        "thumbnail",
+        "imagick",
+        "gd"
     ],
     "homepage": "https://github.com/PaiCthulhu/FeuerImageEditor",
     "license": "MIT",
@@ -41,7 +43,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.4-dev"
+            "dev-master": "0.4"
         }
     },
     "config": {

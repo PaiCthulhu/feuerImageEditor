@@ -27,25 +27,24 @@ vendor/
 Via Composer
 
 ``` bash
-$ composer require PaiCthulhu/FeuerImageEditor
+$ composer require pai-cthulhu/feuerimageeditor
 ```
 
 ## Usage
 
 ``` php
-$skeleton = new PaiCthulhu\FeuerImageEditor();
-echo $skeleton->echoPhrase('Hello, League!');
+$img = Image::open('/path/to/file.jpg');
+$img->thumb('/path/to/thumb.jpg');
 ```
 
 ## Change log
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
-## Testing
-
-``` bash
-$ composer test
-```
+[comment]: <> (## Testing)
+[comment]: <> (``` bash)
+[comment]: <> ($ composer test)
+[comment]: <> (```)
 
 ## Contributing
 
@@ -64,17 +63,17 @@ If you discover any security related issues, please email william.jvenancio@gmai
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
-[ico-version]: https://img.shields.io/packagist/v/PaiCthulhu/FeuerImageEditor.svg?style=flat-square
+[ico-version]: https://img.shields.io/packagist/v/pai-cthulhu/feuerimageeditor.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [ico-travis]: https://img.shields.io/travis/PaiCthulhu/FeuerImageEditor/master.svg?style=flat-square
 [ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/PaiCthulhu/FeuerImageEditor.svg?style=flat-square
 [ico-code-quality]: https://img.shields.io/scrutinizer/g/PaiCthulhu/FeuerImageEditor.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/PaiCthulhu/FeuerImageEditor.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/pai-cthulhu/feuerimageeditor.svg?style=flat-square
 
-[link-packagist]: https://packagist.org/packages/PaiCthulhu/FeuerImageEditor
+[link-packagist]: https://packagist.org/packages/pai-cthulhu/feuerimageeditor
 [link-travis]: https://travis-ci.org/PaiCthulhu/FeuerImageEditor
 [link-scrutinizer]: https://scrutinizer-ci.com/g/PaiCthulhu/FeuerImageEditor/code-structure
 [link-code-quality]: https://scrutinizer-ci.com/g/PaiCthulhu/FeuerImageEditor
-[link-downloads]: https://packagist.org/packages/PaiCthulhu/FeuerImageEditor
+[link-downloads]: https://packagist.org/packages/pai-cthulhu/feuerimageeditor
 [link-author]: https://github.com/PaiCthulhu
 [link-contributors]: ../../contributors
