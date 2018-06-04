@@ -43,8 +43,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.4-dev",
-            "dev-wip": "0.5-wip-dev"
+            "dev-master": "0.4-dev"
         }
     },
     "config": {
