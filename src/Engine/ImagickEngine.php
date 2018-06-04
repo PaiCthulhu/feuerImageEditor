@@ -21,6 +21,10 @@ class ImagickEngine extends Engine {
         $this->handle = clone $this->handle;
     }
 
+    function getHandle(){
+        return $this->handle;
+    }
+
     function loadFile($path)
     {
         $this->handle->readImage($path);
@@ -66,6 +70,15 @@ class ImagickEngine extends Engine {
             case Align::RIGHT: return \Imagick::ALIGN_RIGHT;break;
         }
         return false;
+    }
+
+    /**
+     * @param \PaiCthulhu\FeuerImageEditor\Image $img
+     * @return bool
+     *
+     */
+    function drawImage($img){
+        return $this->handle->compositeImage($img->getHandle(), 2, $img->getX(), $img->getY());
     }
 
     /**
@@ -121,7 +134,7 @@ class ImagickEngine extends Engine {
 
         //Alignment
         $draw->setTextAlignment($this->alignment($tb->horAlign()));
-        $x = $tb->getX();
+        $x = $tb->getX()+1;
         if($tb->horAlign() == Align::CENTER)
             $x += $tb->getWidth() / 2;
         else if($tb->horAlign() == Align::RIGHT)
@@ -134,6 +147,7 @@ class ImagickEngine extends Engine {
 
         //Finish
         $draw->annotation($x, $y, $tb->getText());
+
         return $this->handle->drawImage($draw);
     }
 
