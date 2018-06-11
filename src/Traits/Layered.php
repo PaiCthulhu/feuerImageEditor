@@ -30,6 +30,8 @@ trait Layered {
      * @return int Returns $this->layers array size
      */
     function layerCount(){
+        if(empty($this->layers))
+            return 0;
         return count($this->layers);
     }
 
