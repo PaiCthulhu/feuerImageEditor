@@ -19,6 +19,7 @@ trait Text {
     protected
         $fontFile,
         $fontSize,
+        $fontWeight,
         $color,
         $angle,
         $text,
@@ -35,6 +36,7 @@ trait Text {
     {
         parent::__construct();
         $this->fontSize = $this->angle = $this->strokeWidth = 0;
+        $this->fontWeight = 400;
         $this->strokeOpacity = 1;
         $this->color = '#000000';
         $this->hAlign = Align::LEFT;
@@ -74,6 +76,23 @@ trait Text {
 
     function getFontSize(){
         return $this->fontSize;
+    }
+
+    /**
+     * @param int|string $weight A value between 100 and 900
+     * @return static $this
+     * @throws \Exception
+     */
+    function setFontWeight($weight){
+        $weight = intval($weight);
+        if(!($weight >= 100 && $weight <= 900))
+            throw new \Exception("{$weight} is not a valid font weight");
+        $this->fontWeight = $weight;
+        return $this;
+    }
+
+    function getFontWeight(){
+        return $this->fontWeight;
     }
 
     /**
@@ -134,7 +153,7 @@ trait Text {
     function setStroke($width, $color = null, $opacity = null){
         $color = $color ?? $this->getColor();
         $opacity = $opacity ?? 1;
-        $this->setStrokeWidth($width)->setStrokeColor($color);
+        $this->setStrokeWidth($width)->setStrokeColor($color)->setStrokeOpacity($opacity);
         return $this;
     }
 

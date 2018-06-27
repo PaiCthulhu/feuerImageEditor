@@ -117,6 +117,7 @@ class ImagickEngine extends Engine {
         //Font
         $draw->setFillColor(new \ImagickPixel($tb->getColor()));
         $draw->setFontSize($tb->getFontSize());
+        $draw->setFontWeight($tb->getFontWeight());
 
         //Stroke
         if(!empty($tb->getStrokeWidth()) && $tb->getStrokeWidth() > 0){
