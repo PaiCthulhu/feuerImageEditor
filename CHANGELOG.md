@@ -4,6 +4,17 @@ All notable changes to `FeuerImageEditor` will be documented in this file.
 
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.4.2] - 2018-08-29
+
+### Fixed
+
+- Fixed composite constant on `ImagickEngine.drawImage()` to work across different ImageMagick versions
+
+## [0.4.1] - 2018-06-27
+
+### Added
+- Font weight option for `Text`
+
 ## [0.4] - 2018-06-04
 
 ### Added
