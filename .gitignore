@@ -6,3 +6,5 @@ vendor/
 composer\.lock
 
 index\.php
+
+tests/

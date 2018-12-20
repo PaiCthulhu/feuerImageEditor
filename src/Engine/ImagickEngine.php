@@ -144,6 +144,7 @@ class ImagickEngine extends Engine
         }
 
         //Font
+        $draw->setFont($tb->getFont());
         $draw->setFillColor(new \ImagickPixel($tb->getColor()));
         $draw->setFontSize($tb->getFontSize());
         $draw->setFontWeight($tb->getFontWeight());
