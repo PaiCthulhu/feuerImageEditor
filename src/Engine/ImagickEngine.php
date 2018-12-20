@@ -113,26 +113,26 @@ class ImagickEngine extends Engine
      * @param Textbox $tb
      * @return bool
      */
-    public function drawTextBox(Textbox $tb){
+    public function drawTextBox(Textbox $tb)
+    {
         $draw = new \ImagickDraw();
         $draw->setResolution($tb->getWidth(), $tb->getHeight());
 
         //Shape
-        if(!empty($tb->getBGColor()) || (!empty($tb->getBorderWidth()) && $tb->getBorderWidth() > 0))
-        {
+        if (!empty($tb->getBGColor()) || (!empty($tb->getBorderWidth()) && $tb->getBorderWidth() > 0)) {
             //Background
-            if(!empty($tb->getBGColor()))
+            if (!empty($tb->getBGColor())) {
                 $bgColor = $tb->getBGColor();
-            else
+            } else {
                 $bgColor = '#00000000';
+            }
             $draw->setFillColor(new \ImagickPixel($bgColor));
             //Border
-            if(!empty($tb->getBorderWidth()) && $tb->getBorderWidth() > 0)
-            {
+            if (!empty($tb->getBorderWidth()) && $tb->getBorderWidth() > 0) {
                 $color = $tb->getBorderColor() ?? $tb->getBGColor();
                 $draw->setStrokeWidth($tb->getBorderWidth());
                 $draw->setStrokeColor(new \ImagickPixel($color));
-            } else{
+            } else {
                 $draw->setStrokeWidth(0);
                 $draw->setStrokeColor(new \ImagickPixel("#00000000"));
                 $draw->setStrokeOpacity(0);
@@ -150,8 +150,7 @@ class ImagickEngine extends Engine
         $draw->setFontWeight($tb->getFontWeight());
 
         //Stroke
-        if (!empty($tb->getStrokeWidth()) && $tb->getStrokeWidth() > 0)
-        {
+        if (!empty($tb->getStrokeWidth()) && $tb->getStrokeWidth() > 0) {
             $color = $tb->getStrokeColor() ?? $tb->getColor();
             $opac  = $tb->getStrokeOpacity() ?? 1;
             $draw->setStrokeWidth($tb->getStrokeWidth());

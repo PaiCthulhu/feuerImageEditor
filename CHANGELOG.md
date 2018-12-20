@@ -4,6 +4,12 @@ All notable changes to `FeuerImageEditor` will be documented in this file.
 
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.4.3] - 2018-12-20
+
+### Fixed
+
+- Fixed font file not being loaded for `Textbox`
+
 ## [0.4.2] - 2018-08-29
 
 ### Fixed
