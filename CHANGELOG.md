@@ -4,6 +4,10 @@ All notable changes to `FeuerImageEditor` will be documented in this file.
 
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.4.4] - 2019-02-25
+
+- Fixed `ImagickEngine.resize()` to not fill backgrounds, as it was causing a issue with `.png` image files
+
 ## [0.4.3] - 2018-12-20
 
 ### Fixed

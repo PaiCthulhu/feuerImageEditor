@@ -3,7 +3,8 @@ namespace PaiCthulhu\FeuerImageEditor\Traits;
 
 use PaiCthulhu\FeuerImageEditor\Align;
 
-trait Text {
+trait Text
+{
     /**
      * @var string $fontFile
      * @var int $fontSize
@@ -32,7 +33,7 @@ trait Text {
     /**
      * Text constructor.
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         $this->fontSize = $this->angle = $this->strokeWidth = 0;

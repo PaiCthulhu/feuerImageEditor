@@ -60,7 +60,7 @@ class ImagickEngine extends Engine
     public function resize($width, $height = null)
     {
         $height = $height ?? $width;
-        $this->handle->thumbnailImage($width, $height, true, true);
+        $this->handle->thumbnailImage($width, $height, true);
         return $this;
     }
 

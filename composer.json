@@ -22,6 +22,7 @@
         "php" : "~7.0"
     },
     "require-dev": {
+        "ext-imagick": "*",
         "phpunit/phpunit" : ">=5.4.3",
         "squizlabs/php_codesniffer": "^2.3",
         "kint-php/kint":"~2.2"
