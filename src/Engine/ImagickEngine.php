@@ -15,6 +15,7 @@ class ImagickEngine extends Engine
      */
     public function __construct()
     {
+        parent::__construct();
         if (!extension_loaded('imagick')) {
             throw new \Exception('ImageMagick extension is not available');
         }
@@ -34,9 +35,22 @@ class ImagickEngine extends Engine
         return $this->handle;
     }
 
+    public function isEmpty(){
+        return $this->empty;
+    }
+
     public function loadFile($path)
     {
-        $this->handle->readImage($path);
+        $res = $this->getDPI($path);
+        $this->handle->setResolution($res, $res);
+        try {
+            $this->handle->readImage($path);
+            $this->empty = false;
+        } catch (\Exception $e) {
+            echo "<pre>Erro ao carregar arquivo: {$e->getMessage()}</pre>";
+            d($e);
+            die();
+        }
         return $this;
     }
 
@@ -69,6 +83,7 @@ class ImagickEngine extends Engine
         if ($width == 0 && $width == $height)
             return $this;
         $this->handle->resizeImage($width, $height, \Imagick::FILTER_CATROM, 1);
+        return $this;
     }
 
     public function jpegCompress($quality = 92)
@@ -76,6 +91,11 @@ class ImagickEngine extends Engine
         $this->handle->setImageCompression(\Imagick::COMPRESSION_JPEG);
         $this->handle->setImageCompressionQuality($quality);
         return $this;
+    }
+
+    public function setCMYK()
+    {
+        $this->handle->transformImageColorspace(\Imagick::COLORSPACE_CMYK);
     }
 
     public function alignment($align)
@@ -165,20 +185,39 @@ class ImagickEngine extends Engine
         //Alignment
         $draw->setTextAlignment($this->alignment($tb->horAlign()));
         $x = $tb->getX()+1;
-        if($tb->horAlign() == Align::CENTER)
+        if ($tb->horAlign() == Align::CENTER)
             $x += $tb->getWidth() / 2;
-        elseif($tb->horAlign() == Align::RIGHT)
+        elseif ($tb->horAlign() == Align::RIGHT)
             $x += $tb->getWidth() - 1;
         $y = $tb->getY()+$tb->getFontSize();
-        if($tb->verAlign() == Align::MIDDLE)
+        if ($tb->verAlign() == Align::MIDDLE)
             $y += ($tb->getHeight() - $tb->getFontSize()) / 2;
-        elseif($tb->verAlign() == Align::BOTTOM)
+        elseif ($tb->verAlign() == Align::BOTTOM)
             $y = $tb->getY() + $tb->getHeight();
 
         //Finish
         $draw->annotation($x, $y, $tb->getText());
 
         return $this->handle->drawImage($draw);
+    }
+
+    public static function getDPI($path)
+    {
+        $cmd = 'identify -quiet -format "%x" '.$path;
+        @exec(escapeshellcmd($cmd), $data);
+        if ($data && is_array($data)) {
+            $data = explode(' ', $data[0]);
+
+            if ($data[1] == 'PixelsPerInch') {
+                return $data[0];
+            } elseif ($data[1] == 'PixelsPerCentimeter') {
+                $x = ceil($data[0] * 2.54);
+                return $x;
+            } elseif ($data[1] == 'Undefined') {
+                return $data[0];
+            }
+        }
+        return 72;
     }
 
 }

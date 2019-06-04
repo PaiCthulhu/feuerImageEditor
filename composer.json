@@ -19,11 +19,12 @@
         }
     ],
     "require": {
-        "php" : "~7.0"
+        "php" : "~7.0",
+        "ext-imagick": "*"
     },
     "require-dev": {
         "ext-imagick": "*",
-        "phpunit/phpunit" : ">=5.4.3",
+        "phpunit/phpunit" : "8.*",
         "squizlabs/php_codesniffer": "^2.3",
         "kint-php/kint":"~2.2"
     },
@@ -44,7 +45,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.4.4-dev"
+            "dev-master": "0.4.5-dev"
         }
     },
     "config": {

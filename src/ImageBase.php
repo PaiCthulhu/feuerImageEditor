@@ -4,33 +4,49 @@ namespace PaiCthulhu\FeuerImageEditor;
 
 use PaiCthulhu\FeuerImageEditor\Engine\ImagickEngine;
 
-abstract class  ImageBase {
+abstract class ImageBase
+{
 
     /**
-     * @var Engine $engine
+     * @var \PaiCthulhu\FeuerImageEditor\Engine\Engine $engine
      */
-    protected $engine, $width, $height;
+    protected $engine;
+    /**
+     * @var float $width
+     */
+    protected $width;
+    /**
+     * @var float $height
+     */
+    protected $height;
 
 
-    function __construct()
+    /**
+     * ImageBase constructor.
+     * @throws \Exception
+     */
+    public function __construct()
     {
         $this->engine = new ImagickEngine();
     }
 
-    function __clone()
+    public function __clone()
     {
         $this->engine = clone $this->engine;
     }
 
-    function getHandle(){
+    public function getHandle()
+    {
         return $this->engine->getHandle();
     }
 
-    function base64(){
+    public function base64()
+    {
         return base64_encode($this->engine->getBlob());
     }
 
-    function save($path){
+    public function save($path)
+    {
         $this->engine->saveFile($path);
         return $this;
     }
@@ -39,40 +55,59 @@ abstract class  ImageBase {
      * Factory from file
      * @param string $path path to file
      * @return static
+     * @throws \Exception
      */
-    static function open($path){
+    public static function open($path)
+    {
         $i = new static();
         $i->engine->loadFile($path);
         $i->reloadSize();
         return $i;
     }
 
-    function reloadSize(){
+    public function openFile($path)
+    {
+        return $this->engine->loadFile($path);
+    }
+
+    public function reloadSize()
+    {
         list($this->width, $this->height) = $this->engine->getSize();
         return $this;
     }
 
-    function resize($width, $height = null){
+    public function resize($width, $height = null)
+    {
         $height = $height ?? $width;
         $this->engine->resize($width, $height);
         $this->reloadSize();
         return $this;
     }
 
-    function scale($width = 0, $height = 0){
-        if($width == 0 && $width == $height)
+    public function scale($width = 0, $height = 0)
+    {
+        if ($width == 0 && $width == $height) {
             return $this;
+        }
         $this->engine->scale($width, $height);
         $this->reloadSize();
         return $this;
     }
 
-    function jpegCompress($quality){
+    public function setCMYK()
+    {
+        $this->engine->setCMYK();
+        return $this;
+    }
+
+    public function jpegCompress($quality)
+    {
         $this->engine->jpegCompress($quality);
         return $this;
     }
 
-    function thumb($path, $size = 512, $quality = 75){
+    public function thumb($path, $size = 512, $quality = 75)
+    {
         $thumb = clone $this;
         $thumb->resize($size)->jpegCompress($quality)->save($path);
         return $this;

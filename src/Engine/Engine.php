@@ -1,12 +1,18 @@
 <?php
 namespace PaiCthulhu\FeuerImageEditor\Engine;
 
-abstract class Engine {
+abstract class Engine
+{
+    protected $empty;
+
+    public function __construct()
+    {
+        $this->empty = true;
+    }
 
     /**
      * @param string $path
      * @return static
      */
-    abstract function loadFile($path);
+    abstract public function loadFile($path);
 }
-
