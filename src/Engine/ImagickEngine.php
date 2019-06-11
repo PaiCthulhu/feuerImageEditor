@@ -208,13 +208,13 @@ class ImagickEngine extends Engine
         if ($data && is_array($data)) {
             $data = explode(' ', $data[0]);
 
-            if ($data[1] == 'PixelsPerInch') {
+            if (!isset($data[1]) || $data[1] == 'Undefined') {
+                return $data[0];
+            } elseif ($data[1] == 'PixelsPerInch') {
                 return $data[0];
             } elseif ($data[1] == 'PixelsPerCentimeter') {
                 $x = ceil($data[0] * 2.54);
                 return $x;
-            } elseif ($data[1] == 'Undefined') {
-                return $data[0];
             }
         }
         return 72;
