@@ -41,21 +41,21 @@ class ImagickEngine extends Engine
 
     public function loadFile($path)
     {
-        $res = $this->getDPI($path);
-        $this->handle->setResolution($res, $res);
         try {
             $this->handle->readImage($path);
-            $this->empty = false;
+            $this->__fileLoad($path);
         } catch (\Exception $e) {
-            echo "<pre>Erro ao carregar arquivo: {$e->getMessage()}</pre>";
-            d($e);
-            die();
+            throw new \Exception("Can't load file: {$e->getMessage()}");
         }
         return $this;
     }
 
-    public function saveFile($path)
+    public function saveFile($path = null)
     {
+        if($this->empty)
+            throw new \Exception("You must load a file do be able to save");
+        if(empty($path))
+            $path = $this->path;
         $this->handle->writeImage($path);
         return $this;
     }
@@ -166,7 +166,13 @@ class ImagickEngine extends Engine
         //Font
         $draw->setFont($tb->getFont());
         $draw->setFillColor(new \ImagickPixel($tb->getColor()));
-        $draw->setFontSize($tb->getFontSize());
+        if ($this->getDPI() != 72) {
+            $draw->setFontSize(
+                self::pixelToPoint($tb->getFontSize(), $this->getDPI())
+            );
+        } else {
+            $draw->setFontSize($tb->getFontSize());
+        }
         $draw->setFontWeight($tb->getFontWeight());
 
         //Stroke
@@ -185,15 +191,17 @@ class ImagickEngine extends Engine
         //Alignment
         $draw->setTextAlignment($this->alignment($tb->horAlign()));
         $x = $tb->getX()+1;
-        if ($tb->horAlign() == Align::CENTER)
+        if ($tb->horAlign() == Align::CENTER) {
             $x += $tb->getWidth() / 2;
-        elseif ($tb->horAlign() == Align::RIGHT)
+        } elseif ($tb->horAlign() == Align::RIGHT) {
             $x += $tb->getWidth() - 1;
+        }
         $y = $tb->getY()+$tb->getFontSize();
-        if ($tb->verAlign() == Align::MIDDLE)
+        if ($tb->verAlign() == Align::MIDDLE) {
             $y += ($tb->getHeight() - $tb->getFontSize()) / 2;
-        elseif ($tb->verAlign() == Align::BOTTOM)
+        } elseif ($tb->verAlign() == Align::BOTTOM) {
             $y = $tb->getY() + $tb->getHeight();
+        }
 
         //Finish
         $draw->annotation($x, $y, $tb->getText());
@@ -201,7 +209,31 @@ class ImagickEngine extends Engine
         return $this->handle->drawImage($draw);
     }
 
-    public static function getDPI($path)
+    public function getColorspace()
+    {
+        if ($this->empty) {
+            throw new \Exception("No image loaded. You must open a file to get its information");
+        }
+
+        $info = $this->handle->identifyImage();
+        return $info["colorSpace"];
+    }
+
+    public function getDPI()
+    {
+        if ($this->empty) {
+            throw new \Exception("No image loaded. You must open a file to get its information");
+        }
+        $info = $this->handle->identifyImage();
+        if (isset($info['units'], $info['resolution']) && $info['units'] == "PixelsPerInch"
+            && is_array($info['resolution'])) {
+            return $info["resolution"]["y"];
+        } else {
+            return self::forceGetDPI($this->path);
+        }
+    }
+
+    public static function forceGetDPI($path)
     {
         $cmd = 'identify -quiet -format "%x" '.$path;
         @exec(escapeshellcmd($cmd), $data);
@@ -218,6 +250,11 @@ class ImagickEngine extends Engine
             }
         }
         return 72;
+    }
+
+    public static function pixelToPoint($size, $dpi)
+    {
+        return 72/$dpi * $size;
     }
 
 }

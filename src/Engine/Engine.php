@@ -3,7 +3,7 @@ namespace PaiCthulhu\FeuerImageEditor\Engine;
 
 abstract class Engine
 {
-    protected $empty;
+    protected $empty, $path;
 
     public function __construct()
     {
@@ -15,4 +15,10 @@ abstract class Engine
      * @return static
      */
     abstract public function loadFile($path);
+
+    protected function __fileLoad($path)
+    {
+        $this->empty = false;
+        $this->path = $path;
+    }
 }
