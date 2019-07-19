@@ -4,6 +4,26 @@ All notable changes to `FeuerImageEditor` will be documented in this file.
 
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.5.0] - 2019-07-19
+
+### Added
+- Pixel to point conversion on different DPI ratios
+- Get colorspace from file
+
+### Fixed
+- `getDPI()` on `ImagickEngine` now uses `Imagick::identifyImage()` 
+
+## [0.4.6] - 2019-06-11
+
+### Fixed
+- Fix for `ImagickEngine.getDPI()` in case `'Undefined'` is returned
+
+
+## [0.4.5] - 2019-06-04
+
+### Added
+- DPI manipulation in `ImagickEngine`
+
 ## [0.4.4] - 2019-02-25
 
 - Fixed `ImagickEngine.resize()` to not fill backgrounds, as it was causing a issue with `.png` image files
