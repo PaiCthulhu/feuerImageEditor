@@ -98,6 +98,11 @@ class ImagickEngine extends Engine
         $this->handle->transformImageColorspace(\Imagick::COLORSPACE_CMYK);
     }
 
+    public function setRGB()
+    {
+        $this->handle->transformImageColorspace(\Imagick::COLORSPACE_SRGB);
+    }
+
     public function alignment($align)
     {
         switch ($align) {

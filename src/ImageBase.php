@@ -100,6 +100,11 @@ abstract class ImageBase
         return $this;
     }
 
+    public function setRGB(){
+        $this->engine->setRGB();
+        return $this;
+    }
+
     public function jpegCompress($quality)
     {
         $this->engine->jpegCompress($quality);

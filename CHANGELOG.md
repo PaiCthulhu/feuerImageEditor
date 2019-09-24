@@ -4,6 +4,11 @@ All notable changes to `FeuerImageEditor` will be documented in this file.
 
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.5.1] - 2019-09-24
+
+### Added
+- `ImagickEngine::setRGB()` to allow the user to force RGB colorspace for drawing on CMYK files 
+
 ## [0.5.0] - 2019-07-19
 
 ### Added
