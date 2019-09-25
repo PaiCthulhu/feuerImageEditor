@@ -100,8 +100,15 @@ abstract class ImageBase
         return $this;
     }
 
-    public function setRGB(){
+    public function setRGB()
+    {
         $this->engine->setRGB();
+        return $this;
+    }
+
+    public function setColorProfile($path, $type = "icc")
+    {
+        $this->engine->setColorProfile($path, $type);
         return $this;
     }
 

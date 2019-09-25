@@ -35,7 +35,8 @@ class ImagickEngine extends Engine
         return $this->handle;
     }
 
-    public function isEmpty(){
+    public function isEmpty()
+    {
         return $this->empty;
     }
 
@@ -80,8 +81,9 @@ class ImagickEngine extends Engine
 
     public function scale($width = 0, $height = 0)
     {
-        if ($width == 0 && $width == $height)
+        if ($width == 0 && $width == $height) {
             return $this;
+        }
         $this->handle->resizeImage($width, $height, \Imagick::FILTER_CATROM, 1);
         return $this;
     }
@@ -100,7 +102,16 @@ class ImagickEngine extends Engine
 
     public function setRGB()
     {
-        $this->handle->transformImageColorspace(\Imagick::COLORSPACE_SRGB);
+        $this->handle->transformImageColorspace(\Imagick::COLORSPACE_RGB);
+    }
+
+    public function setColorProfile($path, $type = "icc")
+    {
+        $profile = file_get_contents($path);
+        if (!$profile) {
+            throw new \Exception("Can't load profile \"{$path}\"");
+        }
+        $this->handle->profileImage($type, $profile);
     }
 
     public function alignment($align)
@@ -137,6 +148,7 @@ class ImagickEngine extends Engine
     /**
      * @param Textbox $tb
      * @return bool
+     * @throws \Exception
      */
     public function drawTextBox(Textbox $tb)
     {
