@@ -40,9 +40,10 @@ class ImagickEngine extends Engine
         return $this->empty;
     }
 
-    public function loadFile($path)
+    public function loadFile($path, $dpi = 72)
     {
         try {
+            $this->handle->setResolution($dpi, $dpi);
             $this->handle->readImage($path);
             $this->__fileLoad($path);
         } catch (\Exception $e) {

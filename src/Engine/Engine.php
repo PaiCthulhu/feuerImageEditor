@@ -12,9 +12,10 @@ abstract class Engine
 
     /**
      * @param string $path
+     * @param int $dpi
      * @return static
      */
-    abstract public function loadFile($path);
+    abstract public function loadFile($path, $dpi = 72);
 
     protected function __fileLoad($path)
     {

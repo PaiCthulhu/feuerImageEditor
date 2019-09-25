@@ -54,13 +54,14 @@ abstract class ImageBase
     /**
      * Factory from file
      * @param string $path path to file
+     * @param int $dpi
      * @return static
      * @throws \Exception
      */
-    public static function open($path)
+    public static function open($path, $dpi = 72)
     {
         $i = new static();
-        $i->engine->loadFile($path);
+        $i->engine->loadFile($path, $dpi);
         $i->reloadSize();
         return $i;
     }
