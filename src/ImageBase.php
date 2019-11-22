@@ -51,6 +51,26 @@ abstract class ImageBase
         return $this;
     }
 
+    public function asText()
+    {
+        return $this->engine->getAsText();
+    }
+
+    /**
+     * @param $width
+     * @param $height
+     * @return static
+     * @throws \Exception
+     */
+    public static function new($width, $height)
+    {
+        $i = new static();
+        $i->width = $width;
+        $i->height = $height;
+        $i->engine->newFile($width, $height);
+        return $i;
+    }
+
     /**
      * Factory from file
      * @param string $path path to file
@@ -92,6 +112,17 @@ abstract class ImageBase
         }
         $this->engine->scale($width, $height);
         $this->reloadSize();
+        return $this;
+    }
+
+    public function setFormat($format){
+        $this->engine->setFormat($format);
+        return $this;
+    }
+
+    public function setBGColor($color)
+    {
+        $this->engine->setBGColor($color);
         return $this;
     }
 

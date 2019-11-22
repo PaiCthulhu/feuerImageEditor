@@ -40,6 +40,12 @@ class ImagickEngine extends Engine
         return $this->empty;
     }
 
+    public function newFile($width, $height)
+    {
+        $this->handle->newImage($width, $height, "none");
+        $this->empty = false;
+    }
+
     public function loadFile($path, $dpi = 72)
     {
         try {
@@ -60,6 +66,11 @@ class ImagickEngine extends Engine
             $path = $this->path;
         $this->handle->writeImage($path);
         return $this;
+    }
+
+    public function getAsText()
+    {
+        return (string) $this->getHandle();
     }
 
     public function getBlob()
@@ -93,6 +104,25 @@ class ImagickEngine extends Engine
     {
         $this->handle->setImageCompression(\Imagick::COMPRESSION_JPEG);
         $this->handle->setImageCompressionQuality($quality);
+        return $this;
+    }
+
+    public function setFormat($format)
+    {
+        $this->handle->setFormat($format);
+        return $this;
+    }
+
+    public function setBGColor($color)
+    {
+        $this->handle->setImageBackgroundColor($color);
+        $this->handle->setImageAlphaChannel(\Imagick::ALPHACHANNEL_REMOVE);
+        try {
+            $handle = $this->handle->mergeImageLayers(\Imagick::LAYERMETHOD_FLATTEN);
+        } catch (\Exception $e) {
+            throw new \Exception("Error to set background color: ".$e->getMessage());
+        }
+        $this->handle = $handle;
         return $this;
     }
 

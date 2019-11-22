@@ -3,6 +3,13 @@
 [//]: # "All notable changes to `FeuerImageEditor` will be documented in this file."
 [//]: # "Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles."
 
+## [0.5.4] - 2019-11-22
+
+### Added
+- Option to create a new image without a file
+- Funcition to export image as text
+- Options to set image format and change the background color
+
 ## [0.5.3] - 2019-09-25
 
 ### Changed
