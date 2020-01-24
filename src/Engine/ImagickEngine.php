@@ -53,7 +53,7 @@ class ImagickEngine extends Engine
             $this->handle->readImage($path);
             $this->__fileLoad($path);
         } catch (\Exception $e) {
-            throw new \Exception("Can't load file: {$e->getMessage()}");
+            throw new \Exception("Can't load file \"{$path}\": {$e->getMessage()}");
         }
         return $this;
     }
@@ -184,7 +184,7 @@ class ImagickEngine extends Engine
     public function drawTextBox(Textbox $tb)
     {
         $draw = new \ImagickDraw();
-        $draw->setResolution($tb->getWidth(), $tb->getHeight());
+        //$draw->setResolution($tb->getWidth(), $tb->getHeight());
 
         //Shape
         if (!empty($tb->getBGColor()) || (!empty($tb->getBorderWidth()) && $tb->getBorderWidth() > 0)) {
@@ -251,10 +251,52 @@ class ImagickEngine extends Engine
             $y = $tb->getY() + $tb->getHeight();
         }
 
+
         //Finish
-        $draw->annotation($x, $y, $tb->getText());
+        //$draw->annotation($x, $y, $tb->getText());
+        $lines = $this->wordWrapAnnotation($tb->getText(), $draw, $tb->getWidth());
+        foreach ($lines[0] as $i=>$line)
+            $draw->annotation($x, $y+($i*$lines[1]), $line);
+
 
         return $this->handle->drawImage($draw);
+    }
+
+    /**
+     * @param string $text
+     * @param \ImagickDraw $draw
+     * @param int $maxWidth
+     * @return array
+     */
+    public function wordWrapAnnotation($text, $draw, $maxWidth)
+    {
+        $text = trim($text);
+
+        $words = preg_split('%\s%', $text, -1, PREG_SPLIT_NO_EMPTY);
+        $lines = [];
+        $i = 0;
+        $lineHeight = 0;
+
+
+        while (count($words) > 0) {
+            $line = implode(' ', array_slice($words, 0, ++$i));
+            $metrics = $this->handle->queryFontMetrics($draw, $line);
+            $lineHeight = max($metrics['textHeight'], $lineHeight);
+
+            // check if we have found the word that exceeds the line width
+            if ($metrics['textWidth'] > $maxWidth or count($words) < $i) {
+                // handle case where a single word is longer than the allowed line width
+                // (just add this as a word on its own line?)
+                if ($i == 1)
+                    $i++;
+
+                $lines[] = implode(' ', array_slice($words, 0, --$i));
+                $words = array_slice($words, $i);
+                $i = 0;
+            }
+        }
+
+        return [$lines, $lineHeight];
     }
 
     public function getColorspace()

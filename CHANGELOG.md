@@ -3,6 +3,11 @@
 [//]: # "All notable changes to `FeuerImageEditor` will be documented in this file."
 [//]: # "Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles."
 
+## [0.5.5] - 2020-01-24
+
+### Added
+- Word-wrapping for textboxes
+
 ## [0.5.4] - 2019-11-22
 
 ### Added
