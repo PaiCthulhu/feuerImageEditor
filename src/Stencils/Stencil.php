@@ -79,7 +79,7 @@ abstract class Stencil {
     }
 
     function getWidth(){
-        return $this->width;
+        return (int) $this->width;
     }
 
     function setHeight($height){
@@ -88,7 +88,7 @@ abstract class Stencil {
     }
 
     function getHeight(){
-        return $this->height;
+        return (int) $this->height;
     }
 
     /**

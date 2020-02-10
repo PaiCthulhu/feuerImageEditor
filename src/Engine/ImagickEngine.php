@@ -184,7 +184,13 @@ class ImagickEngine extends Engine
     public function drawTextBox(Textbox $tb)
     {
         $draw = new \ImagickDraw();
-        //$draw->setResolution($tb->getWidth(), $tb->getHeight());
+        if ($this->getDPI() != 72) {
+            $dpiAdj = ($this->getDPI()/72)/2;
+            $draw->setResolution(
+                $tb->getWidth()/$dpiAdj + ($draw->getFontSize()*$dpiAdj*2.2),
+                $tb->getHeight()*$dpiAdj
+            );
+        }
 
         //Shape
         if (!empty($tb->getBGColor()) || (!empty($tb->getBorderWidth()) && $tb->getBorderWidth() > 0)) {

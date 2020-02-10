@@ -3,6 +3,11 @@
 [//]: # "All notable changes to `FeuerImageEditor` will be documented in this file."
 [//]: # "Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles."
 
+## [0.5.6] - 2020-02-10
+
+### Fixed
+- Word-wrapping on high dpi images
+
 ## [0.5.5] - 2020-01-24
 
 ### Added
