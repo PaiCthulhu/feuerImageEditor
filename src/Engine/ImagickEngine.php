@@ -188,7 +188,7 @@ class ImagickEngine extends Engine
             $dpiAdj = ($this->getDPI()/72)/2;
             $draw->setResolution(
                 $tb->getWidth()/$dpiAdj + ($draw->getFontSize()*$dpiAdj*2.2),
-                $tb->getHeight()*$dpiAdj
+                $tb->getHeight()
             );
         }
 
@@ -261,8 +261,10 @@ class ImagickEngine extends Engine
         //Finish
         //$draw->annotation($x, $y, $tb->getText());
         $lines = $this->wordWrapAnnotation($tb->getText(), $draw, $tb->getWidth());
-        foreach ($lines[0] as $i=>$line)
-            $draw->annotation($x, $y+($i*$lines[1]), $line);
+        foreach ($lines[0] as $i => $line) {
+            $lineY = ($this->getDPI() != 72)? $y+(($i+1)*$lines[1]):$y+($i*$lines[1]);
+            $draw->annotation($x, $lineY, $line);
+        }
 
 
         return $this->handle->drawImage($draw);
