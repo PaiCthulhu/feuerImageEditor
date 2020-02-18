@@ -250,7 +250,10 @@ class ImagickEngine extends Engine
         } elseif ($tb->horAlign() == Align::RIGHT) {
             $x += $tb->getWidth() - 1;
         }
-        $y = $tb->getY()+$tb->getFontSize();
+        $y = $tb->getY();
+        if ($this->getDPI() <= 72) {
+            $y += $tb->getFontSize();
+        }
         if ($tb->verAlign() == Align::MIDDLE) {
             $y += ($tb->getHeight() - $tb->getFontSize()) / 2;
         } elseif ($tb->verAlign() == Align::BOTTOM) {
