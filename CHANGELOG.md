@@ -3,6 +3,15 @@
 [//]: # "All notable changes to `FeuerImageEditor` will be documented in this file."
 [//]: # "Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles."
 
+## [0.5.7] - 2020-08-10
+
+### Changed
+- Changed `ImagickEngine` annotation to annotateImage, that allow use of new line characters
+
+### Fixed
+- Changed new lines to use `\r\n` so it can automatically uses line height instead of manually adding each line. 
+Also it makes compatible with those characters set inside the text.
+
 ## [0.5.6] - 2020-02-10
 
 ### Fixed
