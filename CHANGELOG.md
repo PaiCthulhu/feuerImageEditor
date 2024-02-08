@@ -3,6 +3,9 @@
 [//]: # "All notable changes to `FeuerImageEditor` will be documented in this file."
 [//]: # "Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles."
 
+## [0.6.0] - 2024-02-08
+- Updated to PHP 8.1
+
 ## [0.5.7] - 2020-08-10
 
 ### Changed
